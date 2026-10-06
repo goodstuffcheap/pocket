@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pocket</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<style>
+:root{--bg1:#dff3fa;--bg2:#f6f9ee;--ink:#23364b;--mute:#66798c;--card:#ffffffd9;--line:#fff;--stage:#ffffff80;--dot:#ffffffcc;--cur:#fff;--sky:#2fb0e8;--sky2:#1b86b9;--sh:0 6px 0 #0000000a,0 16px 30px -10px #2a5a7a33;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:'M PLUS Rounded 1c','Hiragino Maru Gothic ProN','Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--bg1) linear-gradient(160deg,var(--bg1),var(--bg2));overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+@property --t1{syntax:'<color>';inherits:true;initial-value:#4cc9a0}
+@property --t2{syntax:'<color>';inherits:true;initial-value:#1fa58a}
+:root{--pan:#e8e9ee;--pill:#fff;--cream:#f8f4e6;--parc:#ffffff24;--mixc:#fff;--mixp:6%}
+body{background:linear-gradient(160deg,color-mix(in srgb,var(--t1),var(--mixc) var(--mixp)),color-mix(in srgb,var(--t2),var(--mixc) var(--mixp)));transition:--t1 .7s,--t2 .7s}
+.bg{position:fixed;inset:0;overflow:hidden}
+.par{position:absolute;height:130px;border-radius:28px;background:var(--parc);transform:skewX(-24deg);animation:slide linear infinite alternate}
+@keyframes slide{to{transform:skewX(-24deg) translateX(140px)}}
+.app{position:relative;height:100%;max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding:16px clamp(14px,3vw,36px) 10px;transition:transform .6s,filter .6s,opacity .6s}
+.app.dim{transform:scale(.95);filter:blur(4px);opacity:.5}
+.hero{position:relative;flex:0 0 clamp(250px,41vh,400px);border-radius:34px;overflow:hidden;border:3px solid var(--pill);box-shadow:var(--sh);background:conic-gradient(#0000 25%,#0000000a 0 50%,#0000 0 75%,#0000000a 0) 0 0/64px 64px,var(--cream)}
+#hs{position:absolute;inset:0;animation:swap .45s both cubic-bezier(.2,.9,.3,1)}
+@keyframes swap{from{opacity:0;transform:translateX(16px)}}
+.edge,.banner{position:absolute;right:0;top:0;bottom:0}
+.edge{width:63%;background:#fff;clip-path:polygon(10% 0,100% 0,100% 100%,0 100%)}
+.banner{width:61%;overflow:hidden;clip-path:polygon(10% 0,100% 0,100% 100%,0 100%);background:linear-gradient(150deg,var(--a),var(--b))}
+.banner i{position:absolute;border-radius:50%}
+.sun{width:60%;aspect-ratio:1;top:-30%;right:8%;background:#ffffff2e}.h1{width:90%;height:70%;left:-10%;bottom:-38%;background:#ffffff38}.h2{width:80%;height:80%;right:-20%;bottom:-52%;background:#0000001f}
+.sp{position:absolute;width:var(--s);fill:#fff;opacity:.85;animation:tw 2.4s infinite alternate ease-in-out}
+@keyframes tw{to{transform:scale(.55) rotate(25deg);opacity:.4}}
+.gl{position:absolute;right:20%;top:50%;width:30%;margin-top:-15%;animation:bob 3.6s infinite alternate ease-in-out}
+.gl svg{width:100%;fill:#fff;filter:drop-shadow(0 10px 0 #0003)}
+@keyframes bob{to{transform:translateY(-14px) rotate(4deg)}}
+.logo{position:absolute;left:clamp(10px,2.4vw,30px);top:57%;transform:translateY(-50%);width:42%}
+.logo b{display:flex;flex-direction:column;font-size:clamp(30px,5.2vw,68px);line-height:.95;font-weight:800;color:#fff;-webkit-text-stroke:9px #2a3050;paint-order:stroke fill;text-shadow:0 6px 0 #2a3050}
+.logo .l2{color:var(--a)}
+.logo p{display:none}
+.cap{position:absolute;z-index:3;display:flex;align-items:center;gap:11px;padding:6px 14px 6px 8px;border-radius:999px;background:var(--pill);box-shadow:var(--sh);font-weight:800;font-size:14px}
+.tl{left:14px;top:14px}.tr{right:14px;top:14px}.br{right:14px;bottom:14px;padding:5px;gap:2px}.bl{position:absolute;z-index:3;left:14px;bottom:14px;display:flex;gap:8px}
+.kb{font-size:10px;font-weight:800;padding:3px 7px;border-radius:7px;background:var(--pan);color:var(--mute)}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;background:linear-gradient(145deg,#ff8a7a,#ffc23c)}
+.gi{display:inline-flex}.gi svg{height:17px;fill:currentColor;display:block}
+.cap>span:not(.kb):not(.av){display:flex;align-items:center;gap:5px}.ctrl{display:none!important}.ctrl.show{display:flex!important}
+.br button{display:grid;place-items:center;width:32px;height:32px;border-radius:50%}.br button:hover{background:var(--pan)}
+.pl{display:flex;align-items:center;gap:7px;padding:7px 15px 7px 10px;border-radius:999px;color:#fff;font-weight:800;font-size:14px;box-shadow:inset 0 2px 0 #fff5,0 4px 0 #0002;animation:swap .4s both}
+.pl svg{height:18px;fill:#fff}
+.or{background:linear-gradient(#ffa24d,#f07c2a)}.sk{background:linear-gradient(#7fd0ff,#47a8f0)}.ind{background:linear-gradient(#6b6cf5,#4a47d8)}.gr{background:linear-gradient(#3fd6a3,#1fb27f)}
+.panel{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:34px;background:var(--pan);box-shadow:var(--sh),inset 0 4px 0 #fff8;padding:16px 18px 12px}
+.crumb{align-self:flex-start;margin-bottom:4px;padding:5px 15px;border-radius:999px;background:var(--pill);font-weight:800;font-size:13px;box-shadow:0 3px 0 #0000001a}.crumb[hidden]{display:none}
+.gw{flex:1;min-height:0;overflow:auto;scrollbar-width:none}
+.grid{position:relative;display:grid;grid-template-columns:repeat(auto-fill,108px);justify-content:center;gap:4px 8px;padding:8px 0}
+.tile{position:relative;z-index:1;display:grid;place-items:center;padding:8px;border-radius:30px;animation:pop .5s both cubic-bezier(.3,1.5,.5,1);animation-delay:calc(var(--i)*30ms)}
+.nl{grid-column-start:1}
+@keyframes pop{from{opacity:0;transform:scale(.6) translateY(16px)}}
+.ico{position:relative;width:92px;aspect-ratio:1;border-radius:27px;display:grid;place-items:center;background:linear-gradient(145deg,var(--a),var(--b));box-shadow:inset 0 3px 0 #fff6,inset 0 -5px 0 #0000001f,0 10px 14px -8px var(--b);border:3px solid #ffffff55;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.ico.fold{border-radius:10px 26px 26px 26px;border-color:#fff3}.ico.fold:before{content:"";position:absolute;left:-3px;top:-14px;width:48%;height:20px;border-radius:14px 14px 0 0;background:var(--a)}
+.ico svg,.big svg{fill:#fff;filter:drop-shadow(0 2px 0 #0003)}.ico svg{width:46%}
+.tile.on .ico{transform:translateY(-4px) scale(1.08)}
+.cursor{position:absolute;left:0;top:0;z-index:0;pointer-events:none;border-radius:32px;background:var(--pill);border:3px solid var(--t2);box-shadow:0 0 0 6px color-mix(in srgb,var(--t2) 28%,transparent),0 14px 24px -10px var(--t2);transition:transform .4s cubic-bezier(.25,1.2,.4,1),width .3s,height .3s}
+.dock{align-self:center;display:flex;gap:10px;padding:7px 14px;margin-top:8px;border-radius:999px;background:var(--pill);box-shadow:var(--sh)}
+.dk{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 16%,transparent);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}.dk:hover{transform:translateY(-4px) scale(1.12)}.dk svg{width:19px;fill:var(--c)}
+.hints{display:flex;justify-content:center;gap:22px;font-size:13px;font-weight:800;color:#fffd;text-shadow:0 1px 2px #0003}
+.hints span{display:flex;align-items:center;gap:7px}
+.hints b{min-width:26px;height:26px;padding:0 6px;border-radius:13px;display:grid;place-items:center;background:var(--pill);color:var(--ink);text-shadow:none;font-size:12px}
+h2{font-size:24px;font-weight:800;line-height:1.1}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{padding:4px 11px;border-radius:999px;background:var(--stage);font-size:12px;font-weight:700;color:var(--mute)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.st{padding:9px 12px;border-radius:16px;background:var(--stage);font-size:12px;color:var(--mute);font-weight:500}.st b{display:block;font-size:15px;color:var(--ink);font-weight:800}
+.btn{padding:14px 34px;border-radius:999px;font-weight:800;font-size:18px;color:#fff;background:linear-gradient(var(--sky),#27a2d8);box-shadow:0 6px 0 var(--sky2);transition:transform .12s,box-shadow .12s}
+.btn:hover{filter:brightness(1.06)}.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--sky2)}
+.btn.ghost{background:var(--card);color:var(--ink);box-shadow:0 5px 0 #0000001a;border:2px solid var(--line)}
+.big:before{content:"";position:absolute;border-radius:50%;background:#ffffff2e}
+#detail{position:fixed;inset:0;z-index:10;visibility:hidden;clip-path:circle(0 at var(--x,50%) var(--y,50%));background:linear-gradient(150deg,color-mix(in srgb,var(--a) 24%,var(--bg1)),color-mix(in srgb,var(--b) 18%,var(--bg2)));padding:calc(22px + env(safe-area-inset-top,0px)) clamp(18px,4vw,56px) calc(22px + env(safe-area-inset-bottom,0px));overflow:auto;transition:clip-path .6s cubic-bezier(.3,.9,.3,1),visibility 0s .6s}
+#detail.open{visibility:visible;clip-path:circle(160% at var(--x,50%) var(--y,50%));transition:clip-path .7s cubic-bezier(.3,.9,.3,1),visibility 0s}
+.dw{max-width:1120px;margin:auto;display:flex;flex-direction:column;gap:26px;min-height:100%}
+.dg{display:grid;grid-template-columns:minmax(0,400px) 1fr;gap:clamp(24px,5vw,60px);align-items:center;flex:1}
+.open .dg>*,.open .shots{animation:rise .55s .22s both cubic-bezier(.2,.9,.3,1)}.open .dg>:last-child{animation-delay:.32s}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+.big{position:relative;aspect-ratio:1;border-radius:22%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,var(--a),var(--b));box-shadow:inset 0 6px 0 #fff6,inset 0 -12px 0 #0000001f,0 30px 40px -24px var(--b)}
+.big:before{width:60%;height:60%;right:-12%;top:-16%}
+.big svg{width:40%;position:relative}
+.dt{display:flex;flex-direction:column;gap:16px}
+h1{font-size:clamp(30px,4.5vw,46px);font-weight:800;line-height:1.05}
+.dt p{font-size:17px;line-height:1.55;color:var(--mute);max-width:52ch}
+.dt .stats{grid-template-columns:repeat(4,1fr);margin:4px 0}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.shot{height:96px;border-radius:22px;background:linear-gradient(120deg,var(--a),var(--b));opacity:.55;display:grid;place-items:end start;padding:12px 14px;color:#fff;font-weight:700;font-size:13px}
+.shot:nth-child(2){background:linear-gradient(200deg,var(--b),var(--a))}.shot:nth-child(3){opacity:.35}
+#launch{position:fixed;inset:0;z-index:20;display:grid;place-items:center;align-content:center;gap:18px;background:color-mix(in srgb,var(--bg1) 80%,transparent);backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .3s}
+#launch.on{opacity:1;pointer-events:auto}
+#launch .big{width:120px;border-radius:30px;animation:hop .7s infinite alternate cubic-bezier(.4,0,.6,1)}
+@keyframes hop{to{transform:translateY(-16px)}}
+.trk{width:260px;height:12px;border-radius:6px;background:var(--stage);overflow:hidden}
+.trk i{display:block;height:100%;width:0;border-radius:6px;background:var(--sky)}
+#launch.on .trk i{animation:fill 2s forwards ease-in-out}
+@keyframes fill{to{width:100%}}
+#toast{position:fixed;left:50%;bottom:58px;z-index:30;transform:translate(-50%,30px);padding:11px 22px;border-radius:999px;background:var(--ink);color:var(--bg1);font-weight:700;font-size:14px;opacity:0;transition:.4s;pointer-events:none}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+#settings,#artpick{position:fixed;inset:0;z-index:15;display:grid;place-items:center;background:color-mix(in srgb,var(--bg1) 70%,transparent);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .3s}
+#settings.on,#artpick.on{opacity:1;pointer-events:auto}
+.sbox{width:min(860px,94vw);max-height:88vh;overflow:auto;border-radius:34px;background:var(--pan);padding:24px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:14px;transform:translateY(20px) scale(.97);transition:transform .4s cubic-bezier(.2,.9,.3,1)}
+#settings.on .sbox,#artpick.on .sbox{transform:none}
+.shead{display:flex;justify-content:space-between;align-items:center}h3{font-size:16px;font-weight:800;margin-top:6px}
+.srow{display:grid;grid-template-columns:140px 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-radius:20px;background:var(--pill);font-size:14px}
+.path{font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn.sm{padding:8px 18px;font-size:14px;box-shadow:0 4px 0 #0000001a}.btn.sm:active{transform:translateY(2px)}
+.emu{padding:14px;border-radius:22px;background:var(--pill);display:grid;gap:8px}.erow{display:flex;gap:8px}
+.in{flex:1;min-width:0;padding:9px 14px;border-radius:14px;border:2px solid var(--pan);background:var(--pan);color:var(--ink);font:inherit;font-size:14px}.in:focus{outline:none;border-color:var(--sky)}
+.chips label.sys{display:inline-block;margin:0 6px 6px 0;padding:4px 12px;border-radius:999px;background:var(--pan);font-size:12px;font-weight:700;cursor:pointer}
+.chips label.sys input{display:none}.chips label.sys:has(input:checked){background:var(--sky);color:#fff}
+.ico.has{background-size:cover;background-position:center}.ico.has svg{display:none}
+.banner.art{background-size:cover;background-position:center}.banner.art i,.banner.art .sp,.banner.art .gl{display:none}
+.lg{max-width:100%;max-height:clamp(90px,19vh,190px);object-fit:contain;-webkit-text-stroke:0;filter:drop-shadow(0 4px 0 #0003)}
+.sc{left:50%;bottom:14px;transform:translateX(-50%);padding:6px 14px;font-size:12px}.sc[hidden]{display:none}
+.ths{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.th{border-radius:14px;overflow:hidden;background:conic-gradient(#0000 25%,#0000000d 0 50%,#0000 0 75%,#0000000d 0) 0 0/16px 16px,var(--pill);box-shadow:0 3px 0 #0000001a;transition:transform .2s}.th:hover{transform:translateY(-3px)}
+.th img{display:block;height:84px;max-width:240px;object-fit:contain}
+button.dk{border:0}
+.fhint{grid-column:1/-1;display:flex;align-items:center;justify-content:center;height:92px;margin:8px 0;padding:0 16px;border-radius:27px;border:3px dashed color-mix(in srgb,var(--mute) 35%,transparent);color:var(--mute);font-size:14px;font-weight:700;text-align:center}
+.dbg{position:fixed;inset:-30px;background-size:cover;background-position:center;opacity:.3;filter:blur(22px) saturate(1.3)}.dw{position:relative}
+.big.has{background-size:cover;background-position:center}
+.dlogo{display:block;max-width:min(100%,460px);max-height:150px;object-fit:contain;filter:drop-shadow(0 4px 0 #0003)}
+#dd{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.credits{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:var(--mute)}.credits b{color:var(--ink)}
+.shots img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:22px;box-shadow:var(--sh)}.shots:empty{display:none}
+@media (max-width:900px){.logo{width:46%}.logo p,.hints{display:none}.dg{grid-template-columns:1fr}.big{max-width:240px}.dt .stats{grid-template-columns:1fr 1fr}.tr .gi:not(.keep),.pl.hide{display:none}}
+</style></head>
+<body>
+<div class="bg" id="bg"></div>
+<div class="app" id="app">
+  <section class="hero" id="hero"><div id="hs">
+    <div class="edge"></div>
+    <div class="banner"><i class="sun"></i><i class="h1"></i><i class="h2"></i>
+      <svg class="sp" style="--s:30px;left:22%;top:16%" viewBox="0 0 24 24"><path d="M12 0c1 6 5 10 12 12-7 2-11 6-12 12-1-6-5-10-12-12C7 10 11 6 12 0z"/></svg>
+      <svg class="sp" style="--s:18px;left:52%;top:62%;animation-delay:-1s" viewBox="0 0 24 24"><path d="M12 0c1 6 5 10 12 12-7 2-11 6-12 12-1-6-5-10-12-12C7 10 11 6 12 0z"/></svg>
+      <svg class="sp" style="--s:24px;right:8%;top:30%;animation-delay:-.5s" viewBox="0 0 24 24"><path d="M12 0c1 6 5 10 12 12-7 2-11 6-12 12-1-6-5-10-12-12C7 10 11 6 12 0z"/></svg>
+      <div class="gl" id="gl"></div></div>
+    <div class="logo"><b id="logo"></b><p id="ldesc"></p></div>
+  </div>
+  <button class="cap tl" id="pl" data-own><span class="kb">LB</span><span class="av">M</span><span style="color:#7a5af0"><i class="gi" data-g="users"></i>4</span><span style="color:#f0802a"><i class="gi" data-g="chat"></i>7</span></button>
+  <button class="cap tr" id="pr" data-own><span class="kb">RB</span><span style="color:#f0802a"><i class="gi keep" data-g="bell"></i>2</span><span class="ctrl" id="ctrl"><i class="gi keep" data-g="pad"></i></span><i class="gi" data-g="wifi"></i><i class="gi" data-g="batt"></i><span id="time"></span></button>
+  <div class="bl" id="sp"></div>
+  <div class="cap sc" id="sprog" hidden></div>
+  <div class="cap br"><button id="artbtn" data-own aria-label="Change artwork" title="Change artwork"><i class="gi" data-g="img"></i></button><button id="info" data-own aria-label="Open details"><i class="gi" data-g="info"></i></button></div>
+  </section>
+  <section class="panel"><button class="crumb" id="crumb" data-own hidden>‹ Folders</button><div class="gw"><div class="grid" id="grid"></div></div><div class="dock" id="dock"></div></section>
+  <footer class="hints"><span><b>◀▲▼▶</b>Move</span><span><b>A</b>Open</span><span><b>B</b>Back</span><span><b>Y</b>Art</span></footer>
+</div>
+
+<div id="detail" aria-hidden="true"><div class="dbg" id="dbg"></div><div class="dw">
+  <button class="btn ghost" id="back" data-own style="align-self:flex-start;padding:10px 24px;font-size:16px">‹ Back</button>
+  <div class="dg">
+    <div class="big" id="dbig"></div>
+    <div class="dt"><h1 id="dt"></h1><div class="chips" id="dc"></div><p id="dd"></p><div class="credits" id="dcr"></div>
+      <div class="stats" id="ds"></div>
+      <div class="row"><button class="btn" id="launchBtn">Launch</button><button class="btn ghost" id="fav" data-own>♡ Favorite</button><button class="btn ghost" id="dart" data-own>Change artwork</button></div><div class="path" id="dpath"></div>
+    </div>
+  </div>
+  <div class="shots" id="dshots"></div>
+</div></div>
+<div id="settings" aria-hidden="true"><div class="sbox">
+  <div class="shead"><h2>Settings</h2><button class="btn ghost sm" id="sclose" data-own>Close</button></div>
+  <div class="srow"><b>ROMs folder</b><span class="path" id="sroms"></span><button class="btn ghost sm" id="pickroms" data-own>Browse</button></div>
+  <div class="srow"><b>Emulators folder</b><span class="path" id="semus"></span><button class="btn ghost sm" id="pickemus" data-own>Browse</button></div>
+  <div class="srow" style="grid-template-columns:140px 1fr"><b>SteamGridDB key</b><input class="in" id="skey" type="password" placeholder="Paste your API key (free from steamgriddb.com)"></div>
+  <div class="srow" style="grid-template-columns:140px 1fr"><b>RAWG key</b><input class="in" id="rkey" type="password" placeholder="Optional: descriptions, genres, release info (rawg.io/apidocs)"></div>
+  <div class="srow"><b>Artwork</b><span class="path" id="sstat">Idle</span><span class="erow"><button class="btn ghost sm" id="sscrape" data-own>Scrape missing</button><button class="btn ghost sm" id="sredo" data-own>Redo all</button></span></div>
+  <h3>Emulators</h3><div id="elist" style="display:grid;gap:12px"></div>
+  <button class="btn ghost sm" id="addemu" data-own style="align-self:flex-start">+ Add emulator</button>
+</div></div>
+<div id="artpick" aria-hidden="true"><div class="sbox">
+  <div class="shead"><h2 id="apt">Change artwork</h2><button class="btn ghost sm" id="apclose" data-own>Close</button></div>
+  <div class="erow"><input class="in" id="apq" placeholder="Search name on SteamGridDB"><button class="btn sm" id="apgo" data-own>Search</button></div>
+  <p class="path" id="apm"></p><div id="apb"></div>
+</div></div>
+<div id="launch"><div class="big" id="lico"></div><h2 id="lname"></h2><div class="trk"><i></i></div></div>
+<div id="toast"></div>
+
+<script type="module">
+const G={star:'M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.400 6.100 20.500l1.200-6.500L2.500 9.400l6.600-.9z',heart:'M12 21s-8-5.200-8-11a4.500 4.500 0 0 1 8-2.800A4.500 4.500 0 0 1 20 10c0 5.800-8 11-8 11z',bolt:'M13 2L4 14h6l-1 8 9-12h-6z',cloud:'M7 19a5 5 0 0 1-.5-10 6 6 0 0 1 11.500 1.500A4 4 0 0 1 17 19z',note:'M9 3v11.200A3.500 3.500 0 1 0 11 17V8l7-1.500v5.700A3.500 3.500 0 1 0 20 15V3z',flag:'M5 3v18h2v-7h11l-2-4 2-4H7V3z',gear:'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm-1-6h2l.5 2.600 2 .9 2.200-1.500 1.400 1.400-1.500 2.200.9 2 2.600.5v2l-2.600.5-.9 2 1.500 2.200-1.400 1.400-2.200-1.500-2 .9L13 22h-2l-.5-2.600-2-.9-2.200 1.500-1.400-1.400 1.500-2.200-.9-2L2 13v-2l2.600-.5.9-2L4 6.300l1.400-1.400 2.200 1.500 2-.9z',leaf:'M20 4C9 4 4 9 4 15c0 2 .8 3.500 2 5 1-5 4-8 9-10-4 3-6 6-7 11 6 1 12-3 12-17z',photo:'M4 7h3l1.500-2h7L17 7h3v12H4zm8 3a3.500 3.500 0 1 0 0 7 3.500 3.500 0 0 0 0-7z',play:'M7 4l13 8-13 8z',bag:'M6 8h12l1 13H5zm3-1a3 3 0 0 1 6 0v1h-2V7a1 1 0 0 0-2 0v1H9z',users:'M9 11a3.500 3.500 0 1 0 0-7 3.500 3.500 0 0 0 0 7zm7 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20c0-3.500 3-6 7-6s7 2.500 7 6zm14-5c3 0 6 1.800 6 5h-5c0-2-.5-3.500-1-5z'};
+// name, folder, color A, color B, glyph, genre, description, played, last opened, size, players
+const D=[
+['Starlit Isles','games','#5ec8ff','#4a63e8','star','Adventure','Hop between floating islands, wake the sleeping constellations and map the night sky.','12h 40m','Yesterday','2.1 GB','1 player'],
+['Moss & Mallet','games','#8be28b','#2fa66a','leaf','Puzzle','A cozy builder where every swing of the mallet grows a new patch of garden.','6h 05m','Mon','640 MB','1 player'],
+['Pocket Kart GP','games','#ff8a6b','#e8434f','flag','Racing','Tiny karts, huge shortcuts. Race through eight cups of bouncy, bright tracks.','21h 18m','Today','1.4 GB','1-4 players'],
+['Tidepool Tales','games','#6fe3d0','#1f9fb8','cloud','Story','Shrink down, explore a tidepool town and help its crab-sized residents.','3h 52m','Sep 28','980 MB','1 player'],
+['Beat Bunny','games','#ff9fcf','#c24ee0','note','Rhythm','Tap along with a rabbit who drums on everything. Includes 40 original tracks.','9h 30m','Sun','420 MB','1-2 players'],
+['Skyward Run','games','#ffe066','#ff9a2e','bolt','Platformer','Sprint, glide and wall-bounce across a city built on a thunderstorm.','15h 11m','Today','1.8 GB','1 player'],
+['Café Panic','games','#ffb0b8','#f0607a','heart','Party','Run a café with your friends. Orders pile up, and so do the arguments.','4h 47m','Sep 20','710 MB','1-4 players'],
+['Friends','apps','#7fd4ff','#3a8fe0','users','Social','See who is online, send a wave and join their game in one step.','1h 20m','Today','90 MB','Online'],
+['Shop','apps','#ffd36b','#f08a24','bag','Store','Browse new releases, demos and free downloads picked for you.','45m','Sep 30','120 MB','Online'],
+['Settings','apps','#b9c6d6','#7186a0','gear','System','Display, audio, controllers, library folders and parental controls.','','Today','40 MB','System'],
+['Gallery','media','#c3a6ff','#7a52e0','photo','Photos','Screenshots and clips from every game, sorted by day.','2h 02m','Tue','310 MB','Local'],
+['Jukebox','media','#ffa0d8','#e0509c','note','Music','Your game soundtracks and playlists, playing in the background.','30h 10m','Today','55 MB','Local'],
+['Cinema Room','media','#8fa8ff','#4a4fd0','play','Video','Trailers, replays and shared recordings on a big, cozy screen.','5h 44m','Sep 25','75 MB','Local']];
+Object.assign(G,{pad:'M7 7h10a5 5 0 0 1 5 5l-1 5a2.500 2.500 0 0 1-4.500 1L15 16H9l-1.500 2A2.500 2.500 0 0 1 3 17l-1-5a5 5 0 0 1 5-5zm0 3v1H6v2h1v1h2v-1h1v-2H9v-1zm8.500 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z',apps:'M4 4h7v7H4zm9 0h7v7h-7zM4 13h7v7H4zm9 0h7v7h-7z',trophy:'M7 3h10v5a5 5 0 0 1-10 0zM11 13h2v4h3v2H8v-2h3z',timer:'M9 2h6v2H9zm3 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 3v4.500l2.500 1.500-1 1.700L11 14V9z',check:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm-1.500 12.500L7 12l1.400-1.400 2.100 2.100 5.100-5.100L17 9.100z',bell:'M12 22a2.500 2.500 0 0 0 2.500-2.500h-5A2.500 2.500 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.700V3a2 2 0 0 0-4 0v1.300A7 7 0 0 0 5 11v5l-2 2v1h18v-1z',chat:'M4 4h16v12H9l-5 4z',wifi:'M12 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM4.500 10.500a11 11 0 0 1 15 0l-1.700 1.800a8.500 8.500 0 0 0-11.600 0zM1.500 7.200a15 15 0 0 1 21 0L20.700 9a12.500 12.500 0 0 0-17.400 0z',batt:'M2 7h17a2 2 0 0 1 2 2v1h1.500v4H21v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zm1.500 3v4h12v-4z',moon:'M20 14.500A8.500 8.500 0 0 1 9.500 4 8.500 8.500 0 1 0 20 14.500z',info:'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z'});
+Object.assign(G,{img:'M3 4h18v16H3zm3 13h12l-4-5.500-3 4-2-2z',home:'M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z',refresh:'M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z'});
+const F=[['Adventure','adv','#ff8fa3','#e8435c','pad'],['Arcade','arc','#ffb36b','#f07a1e','bolt'],['Apps','apps','#ffe066','#e9a820','apps'],['Media','media','#7fe0b8','#2fa57e','play']];
+const ADV=['Starlit Isles','Moss & Mallet','Tidepool Tales'];
+const FOLD0=F.map(f=>({f:1,n:f[0],k:f[1],a:f[2],b:f[3],g:f[4]}));
+const I0=D.map((d,i)=>({n:d[0],k:d[1]==='games'?(ADV.includes(d[0])?'adv':'arc'):d[1],a:d[2],b:d[3],g:d[4],gen:d[5],ds:d[6],pl:d[7]||'N/A',la:d[8],sz:d[9],pp:d[10],ach:(d[0].length*5)%38+4,rt:['Great','Perfect','Good'][i%3]}));
+const PAL=[['#ff8fa3','#e8435c'],['#ffb36b','#f07a1e'],['#ffe066','#e9a820'],['#7fe0b8','#2fa57e'],['#7fd0ff','#3a8fe0'],['#c3a6ff','#7a52e0'],['#ff9fcf','#c24ee0'],['#6fe3d0','#1f9fb8']];
+const GL=['star','bolt','leaf','cloud','flag','heart','note'];
+const fmt=b=>b?(b>1e9?(b/1e9).toFixed(1)+' GB':Math.max(1,b/1e6|0)+' MB'):'N/A';
+const fmtT=ms=>{const m=Math.round((ms||0)/6e4);return m<1?'N/A':m<60?m+'m':Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m'};
+const fmtD=t=>{if(!t)return'Never';const d=Math.round((new Date().setHours(0,0,0,0)-new Date(t).setHours(0,0,0,0))/864e5);return d<=0?'Today':d===1?'Yesterday':d<7?d+' days ago':new Date(t).toLocaleDateString([],{month:'short',day:'numeric',year:'numeric'})};
+let lib,real,FOLD,I,cfg=null,setOpen=false,artOpen=false,exes=[];
+async function loadLib(){lib=window.api?await window.api.scan():null;real=!!(lib&&lib.systems.length);
+FOLD=real?lib.systems.map((x,i)=>({f:1,n:x.name,k:x.id,a:PAL[i%8][0],b:PAL[i%8][1],g:x.id==='desktop'?'apps':'pad'})):FOLD0;
+I=real?lib.games.map((g,i)=>{const fi=Math.max(0,FOLD.findIndex(f=>f.k===g.system)),sn=FOLD[fi].n,st=g.stats||{};return{fav:!!g.fav,meta:g.meta||null,launches:st.launches||0,n:g.name,k:g.system,a:PAL[fi%8][0],b:PAL[fi%8][1],g:GL[i%7],gen:sn,ds:sn+' · '+g.file,pl:fmtT(st.played),la:fmtD(st.last),sz:fmt(g.size),pp:sn,p:g.path,key:g.key,file:g.file,art:g.art||{},ach:(g.name.length*5)%38+4,rt:['Great','Perfect','Good'][i%3]}}):I0}
+await loadLib();
+
+let folder=null,idx=0,list=[],tiles=[],isOpen=false,busy=false;const fav=new Set();
+const $=s=>document.querySelector(s),sv=g=>`<svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="${G[g]}"/></svg>`;
+const grid=$('#grid'),app=$('#app'),det=$('#detail'),bd=document.body;
+const tint=(e,x)=>{e.style.setProperty('--a',x.a);e.style.setProperty('--b',x.b)};
+const chips=a=>a.filter(Boolean).map(t=>`<span class="chip">${t}</span>`).join('');
+const pill=(c,g,t,h)=>`<span class="pl ${c}${h?' hide':''}">${sv(g)}${t}</span>`;
+function build(n){const fv=I.filter(x=>x.fav);list=[...fv,...I.filter(x=>!x.fav)];$('#crumb').hidden=!folder;
+ grid.innerHTML='<div class="cursor" id="cur"></div>'+(fv.length||!real?'':'<div class="fhint">Favorites show up here. Open a game and press Favorite.</div>')+list.map((x,i)=>`<button class="tile${fv.length&&i===fv.length?' nl':''}" style="--i:${Math.min(i,24)};--a:${x.a};--b:${x.b}" data-i="${i}" aria-label="${x.n}"><span class="ico${x.f?' fold':''}${x.art&&x.art.icon?' has':''}"${x.art&&x.art.icon?` style="background-image:url('${x.art.icon}')"`:''}>${sv(x.g)}</span></button>`).join('');
+ tiles=[...grid.querySelectorAll('.tile')];idx=n||0;requestAnimationFrame(()=>sel(idx,true))}
+function hero(x){bd.style.setProperty('--t1',x.a);bd.style.setProperty('--t2',x.b);tint($('#hero'),x);
+ const w=x.n.split(' '),h=Math.ceil(w.length/2),cnt=I.filter(y=>y.k===x.k).length;
+ const A=x.art||{};$('#logo').innerHTML=A.logo?`<img class="lg" src="${A.logo}" alt="">`:`<span>${w.slice(0,h).join(' ')}</span><span class="l2">${w.slice(h).join(' ')}</span>`;const bn=document.querySelector('.banner');bn.classList.toggle('art',!!A.banner);bn.style.backgroundImage=A.banner?`url("${A.banner}")`:'';
+ $('#ldesc').textContent=x.f?`A folder with ${cnt} items. Press Enter to open it.`:x.ds;$('#gl').innerHTML=sv(x.g);
+ $('#sp').innerHTML=x.f?pill('sk','apps',cnt+' items'):(x.meta&&x.meta.metacritic?pill('or','trophy',x.meta.metacritic+' Metacritic'):pill('or','play',(x.launches||0)+' launches'))+pill('sk','timer',x.pl)+pill('ind','timer',x.la,1)+pill('gr','pad',x.gen);
+ const s=$('#hs');s.style.animation='none';s.offsetWidth;s.style.animation=''}
+function sel(i,snap,scroll){idx=i;const c=$('#cur'),t=tiles[i];tiles.forEach((y,j)=>y.classList.toggle('on',j===i));
+ if(snap)c.style.transition='none';
+ c.style.width=t.offsetWidth+'px';c.style.height=t.offsetHeight+'px';c.style.transform=`translate(${t.offsetLeft}px,${t.offsetTop}px)`;
+ if(snap){c.offsetWidth;c.style.transition=''}
+ if(scroll){t.focus({preventScroll:true});t.scrollIntoView({block:'nearest',behavior:'smooth'})}
+ hero(list[i])}
+function go(){const x=list[idx];if(x.f){folder=x.k;build(0)}else openD()}
+function up(){if(!folder)return;const j=FOLD.findIndex(f=>f.k===folder);folder=null;build(j)}
+function openD(){const x=list[idx];if(x.f||isOpen||busy)return;const r=tiles[idx].getBoundingClientRect();
+ det.style.setProperty('--x',r.left+r.width/2+'px');det.style.setProperty('--y',r.top+r.height/2+'px');tint(det,x);tint($('#launch'),x);
+ fillD(x);
+ favUI();det.classList.add('open');det.setAttribute('aria-hidden','false');app.classList.add('dim');isOpen=true;setTimeout(()=>$('#launchBtn').focus({preventScroll:true}),350)}
+function fillD(x){const A=x.art||{},M=x.meta||{},big=$('#dbig');
+ big.classList.toggle('has',!!A.icon);big.style.backgroundImage=A.icon?`url("${A.icon}")`:'';big.innerHTML=A.icon?'':sv(x.g);
+ $('#dbg').style.backgroundImage=A.banner?`url("${A.banner}")`:'';
+ $('#dt').innerHTML=A.logo?`<img class="dlogo" src="${A.logo}" alt="${esc(x.n)}">`:esc(x.n);
+ $('#dc').innerHTML=chips([x.gen,...(M.genres||[]).slice(0,3),M.released&&M.released.slice(0,4),M.esrb]);
+ $('#dd').textContent=M.desc||'No description yet. Add a RAWG API key in Settings to fetch game details.';
+ $('#dcr').innerHTML=[['Developer',M.developers],['Publisher',M.publishers],['Released',M.released?[M.released]:null]].filter(r=>r[1]&&r[1].length).map(([a,b])=>`<span><b>${a}</b> ${esc(b.join(', '))}</span>`).join('');
+ $('#ds').innerHTML=[['Played',x.pl],['Last opened',x.la],['Launched',(x.launches||0)+' times'],['Size',x.sz]].map(([a,b])=>`<div class="st">${a}<b>${b}</b></div>`).join('');
+ $('#dpath').textContent=x.p||'';
+ $('#dshots').innerHTML=(M.shots||[]).map(u=>`<img src="${esc(u)}" loading="lazy" alt="" onerror="this.remove()">`).join('')}
+function closeD(){if(!isOpen||busy)return;det.classList.remove('open');det.setAttribute('aria-hidden','true');app.classList.remove('dim');isOpen=false;tiles[idx].focus({preventScroll:true})}
+function favUI(){$('#fav').textContent=list[idx].fav?'♥ Favorited':'♡ Favorite'}
+async function launch(){if(busy)return;busy=true;const x=list[idx];$('#lico').innerHTML=sv(x.g);$('#lname').textContent='Starting '+x.n;$('#launch').classList.add('on');
+ const t0=Date.now();let r={ok:false,error:'Prototype only: nothing was actually launched.'};
+ if(real&&x.p){try{r=await window.api.launch({system:x.k,path:x.p,key:x.key})}catch(e){r={ok:false,error:String(e)}}}
+ setTimeout(()=>{$('#launch').classList.remove('on');busy=false;if(!r.ok)toast(r.error)},Math.max(0,1800-(Date.now()-t0)))}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2600)}
+const soon=n=>toast(n+' is not part of this prototype.');
+function move(dx,dy){const c=tiles[idx].getBoundingClientRect(),cx=c.left+c.width/2,cy=c.top+c.height/2;let best=-1,bs=1e9;
+ tiles.forEach((t,i)=>{if(i===idx)return;const r=t.getBoundingClientRect(),x=r.left+r.width/2-cx,y=r.top+r.height/2-cy,al=dx?x*dx:y*dy,ac=Math.abs(dx?y:x);if(al<10)return;const sc=al+ac*3;if(sc<bs){bs=sc;best=i}});
+ if(best>=0)sel(best,false,true)}
+function act(a){if(busy)return;
+ if(setOpen||artOpen){if(a==='back'||a==='menu')closeOv();return}
+ if(isOpen){a==='back'?closeD():a==='ok'&&launch();return}
+ if(a==='menu')return openS();if(a==='art')return openArt();if(a==='back')return up();if(a==='prev')return soon('Profile');if(a==='next')return soon('Notifications');
+ ({l:()=>move(-1,0),r:()=>move(1,0),u:()=>move(0,-1),d:()=>move(0,1),ok:go})[a]?.()}
+const KM={ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r',ArrowUp:'u',w:'u',ArrowDown:'d',s:'d',Enter:'ok',' ':'ok',Escape:'back',Backspace:'back',m:'menu',x:'art',q:'prev','[':'prev',e:'next',']':'next'};
+document.addEventListener('keydown',e=>{if(setOpen||artOpen){if(e.key==='Escape')closeOv();return}const a=KM[e.key];if(!a||e.metaKey||e.ctrlKey||e.altKey)return;
+ if(e.target.closest('[data-own]')&&(e.key==='Enter'||e.key===' '))return;e.preventDefault();act(a)});
+grid.addEventListener('mouseover',e=>{const t=e.target.closest('.tile');if(t&&+t.dataset.i!==idx&&!isOpen)sel(+t.dataset.i)});
+grid.addEventListener('click',e=>{const t=e.target.closest('.tile');if(t){if(+t.dataset.i!==idx)sel(+t.dataset.i);go()}});
+$('#crumb').onclick=up;$('#info').onclick=openD;$('#back').onclick=closeD;$('#launchBtn').onclick=launch;
+$('#pl').onclick=()=>soon('Profile');$('#pr').onclick=()=>soon('Notifications');
+$('#fav').onclick=()=>{const x=list[idx];x.fav=!x.fav;if(window.api&&x.key)window.api.setFav(x.key,x.fav);build(0);idx=list.indexOf(x);favUI()};
+$('#dart').onclick=()=>openArt();
+addEventListener('resize',()=>sel(idx,true));
+// controller: d-pad / left stick, A open, B back, LB/RB folders
+const held={},last={};
+function poll(){const g=[...(navigator.getGamepads?navigator.getGamepads():[])].find(Boolean);
+ if(g){$('#ctrl').classList.add('show');const b=i=>g.buttons[i]&&g.buttons[i].pressed,x=g.axes[0]||0,y=g.axes[1]||0,t=performance.now();
+  const m={l:b(14)||x<-.6,r:b(15)||x>.6,u:b(12)||y<-.6,d:b(13)||y>.6,ok:b(0),back:b(1),prev:b(4),next:b(5),menu:b(9),art:b(3)};
+  for(const k in m){if(!m[k]){held[k]=0;continue}if(!held[k]){held[k]=t;last[k]=t;act(k)}else if(k.length===1&&t-held[k]>380&&t-last[k]>120){last[k]=t;act(k)}}}
+ requestAnimationFrame(poll)}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const parseArgs=s=>(s.match(/"[^"]*"|\S+/g)||[]).map(a=>a.replace(/^"|"$/g,''));
+const showArgs=a=>(a||[]).map(x=>/\s/.test(x)?`"${x}"`:x).join(' ');
+const saveS=()=>window.api.setConfig(cfg);
+async function openS(){if(!window.api){toast('Settings need the desktop app.');return}
+ cfg=await window.api.getConfig();exes=cfg.emulatorsDir?await window.api.detectEmus(cfg.emulatorsDir):[];
+ setOpen=true;renderS();$('#settings').classList.add('on');app.classList.add('dim')}
+function closeS(){setOpen=false;$('#settings').classList.remove('on');app.classList.remove('dim')}
+function renderS(){$('#skey').value=cfg.steamGridDbKey||'';$('#rkey').value=cfg.rawgKey||'';$('#sroms').textContent=cfg.romsDir||'Not set';$('#semus').textContent=cfg.emulatorsDir||'Not set (optional, helps suggest .exe files)';
+ const sys=real?lib.systems:[];
+ $('#elist').innerHTML=`<datalist id="exes">${exes.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>`+(Object.entries(cfg.emulators).map(([id,e])=>`<div class="emu" data-id="${id}"><div class="erow"><input class="in" data-f="name" placeholder="Name" value="${esc(e.name)}"><button class="btn ghost sm" data-a="rm">Remove</button></div><div class="erow"><input class="in" data-f="exe" list="exes" placeholder="Path to the emulator .exe" value="${esc(e.exe)}"><button class="btn ghost sm" data-a="exe">Browse</button></div><div class="erow"><input class="in" data-f="args" placeholder="Arguments, with {rom} where the game goes" value="${esc(showArgs(e.args))}"></div><div class="chips">${sys.map(s=>`<label class="sys"><input type="checkbox" data-s="${s.id}" ${cfg.systems[s.id]===id?'checked':''}>${esc(s.name)}</label>`).join('')}</div></div>`).join('')||'<p class="path">No emulators yet. Add one below.</p>')}
+$('#artbtn').onclick=openArt;$('#sclose').onclick=closeS;
+$('#pickroms').onclick=async()=>{const p=await window.api.pickFolder('Choose your ROMs folder');if(!p)return;cfg.romsDir=p;await saveS();await loadLib();folder=null;build(0);renderS()};
+$('#pickemus').onclick=async()=>{const p=await window.api.pickFolder('Choose your emulators folder');if(!p)return;cfg.emulatorsDir=p;await saveS();exes=await window.api.detectEmus(p);renderS()};
+$('#addemu').onclick=async()=>{cfg.emulators['emu'+Date.now()]={name:'New emulator',exe:'',args:['{rom}']};await saveS();renderS()};
+$('#elist').addEventListener('change',async e=>{const c=e.target.closest('.emu');if(!c)return;const id=c.dataset.id,emu=cfg.emulators[id],f=e.target.dataset.f;
+ if(f==='name')emu.name=e.target.value;else if(f==='exe')emu.exe=e.target.value.trim();else if(f==='args')emu.args=parseArgs(e.target.value);
+ else if(e.target.dataset.s){const s=e.target.dataset.s;if(e.target.checked)cfg.systems[s]=id;else if(cfg.systems[s]===id)delete cfg.systems[s]}
+ await saveS();renderS()});
+$('#elist').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;const id=b.closest('.emu').dataset.id;
+ if(b.dataset.a==='rm'){delete cfg.emulators[id];for(const s in cfg.systems)if(cfg.systems[s]===id)delete cfg.systems[s]}
+ else if(b.dataset.a==='exe'){const p=await window.api.pickExe();if(!p)return;cfg.emulators[id].exe=p}
+ await saveS();renderS()});
+function closeOv(){if(setOpen)closeS();if(artOpen)closeArt()}
+let apItem=null;
+async function openArt(){const x=list[idx];if(!window.api||!x||x.f||!x.key){toast('Select a game first.');return}
+ apItem=x;artOpen=true;$('#apt').textContent='Artwork for '+x.n;$('#apq').value=x.n;$('#artpick').classList.add('on');app.classList.add('dim');searchArt()}
+function closeArt(){artOpen=false;$('#artpick').classList.remove('on');app.classList.remove('dim')}
+async function searchArt(){const m=$('#apm');m.textContent='Searching...';$('#apb').innerHTML='';
+ const r=await window.api.artCandidates($('#apq').value.trim());
+ if(r.error){m.textContent=r.error==='No SteamGridDB API key set.'?'Add your SteamGridDB key in Settings first.':r.error;return}
+ if(!r.name){m.textContent='No match found. Try a different name.';return}
+ m.textContent='Matched: '+r.name;
+ $('#apb').innerHTML=[['icon','Icon'],['banner','Banner'],['logo','Logo']].map(([k,l])=>`<h3>${l}</h3><div class="ths">${(r[k]||[]).map(c=>`<button class="th" data-k="${k}" data-u="${esc(c.url)}"><img src="${esc(c.thumb)}" loading="lazy" alt=""></button>`).join('')}<button class="btn ghost sm" data-k="${k}" data-local="1">Use my own file...</button></div>`).join('')}
+$('#apgo').onclick=searchArt;$('#apclose').onclick=closeArt;$('#apq').addEventListener('keydown',e=>{if(e.key==='Enter')searchArt()});
+$('#apb').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;let src=b.dataset.u;
+ if(b.dataset.local)src=await window.api.pickImage();if(!src)return;
+ $('#apm').textContent='Saving...';const r=await window.api.setArt({system:apItem.k,file:apItem.file},b.dataset.k,src);
+ if(r.error){$('#apm').textContent=r.error;return}applyArt(apItem,r.art);$('#apm').textContent='Saved. Pick another or close.'});
+function applyArt(it,art){it.art=art;const i=list.indexOf(it);if(i<0)return;const ic=tiles[i].firstElementChild;
+ ic.classList.toggle('has',!!art.icon);ic.style.backgroundImage=art.icon?`url("${art.icon}")`:'';if(i===idx)hero(it);if(isOpen&&list[idx]===it)fillD(it)}
+async function scrapeNow(force){if(!window.api){toast('Scraping needs the desktop app.');return}toast('Scraping artwork...');await window.api.scrapeStart(force,true)}
+$('#sscrape').onclick=()=>scrapeNow(false);$('#sredo').onclick=()=>scrapeNow(true);
+$('#skey').onchange=async e=>{cfg.steamGridDbKey=e.target.value.trim();await saveS()};
+$('#rkey').onchange=async e=>{cfg.rawgKey=e.target.value.trim();await saveS()};
+$('#dock').onclick=e=>{const b=e.target.closest('.dk');if(!b||isOpen||setOpen||artOpen)return;({home:()=>{folder=null;build(0)},refresh:()=>scrapeNow(false),gear:openS})[b.dataset.a]?.()};
+if(window.api&&window.api.onScrape)window.api.onScrape(d=>{
+ if(d.type==='progress'){const t=`Scraping art ${d.done}/${d.total}`;$('#sprog').hidden=false;$('#sprog').textContent=t;$('#sstat').textContent=t}
+ else if(d.type==='art'){const it=I.find(y=>y.key===d.key);if(it){if(d.meta)it.meta=d.meta;applyArt(it,d.art)}}
+ else if(d.type==='stats'){const it=I.find(y=>y.key===d.key);if(it){it.pl=fmtT(d.stats.played);it.la=fmtD(d.stats.last);it.launches=d.stats.launches||0;if(list[idx]===it)hero(it)}}
+ else if(d.type==='done'){$('#sprog').hidden=true;$('#sstat').textContent='Idle';
+  if(d.error==='nokey'){if(d.manual)toast('Add your SteamGridDB key in Settings first.')}else if(d.error)toast(d.error);else if(d.manual)toast('Artwork scraping finished.')}});
+function tick(){$('#time').textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}
+for(let i=0;i<15;i++){const b=document.createElement('div');b.className='par';b.style.cssText=`width:${240+(i*53%170)}px;left:${(i%5)*26-10}%;top:${Math.floor(i/5)*36+(i%2)*9-8}%;animation-duration:${50+i*5}s;animation-delay:${-i*7}s`;$('#bg').appendChild(b)}
+document.querySelectorAll('[data-g]').forEach(e=>e.innerHTML=sv(e.dataset.g));
+$('#dock').innerHTML=[['home','Home','#3ba6f0'],['refresh','Scrape artwork','#f0912a'],['gear','Settings','#7f90a8']].map(([g,t,c])=>`<button class="dk" data-a="${g}" title="${t}" aria-label="${t}" style="--c:${c}">${sv(g)}</button>`).join('');
+tick();setInterval(tick,10000);build(0);poll();
+</script>
+</body></html>

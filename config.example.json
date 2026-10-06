@@ -1,0 +1,16 @@
+{
+  "romsDir": "D:\\ROMs",
+  "emulatorsDir": "D:\\Emulators",
+  "steamGridDbKey": "",
+  "rawgKey": "",
+  "emulators": {
+    "example": {
+      "name": "Example emulator",
+      "exe": "D:\\Emulators\\Example\\example.exe",
+      "args": ["{rom}"]
+    }
+  },
+  "systems": {
+    "nds": "example"
+  }
+}
