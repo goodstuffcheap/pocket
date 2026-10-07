@@ -52,9 +52,8 @@ npm start
 ```
 npm run dist
 ```
-this builds an installer at dist\Pocket-Setup-1.0.0.exe (and a runnable copy at dist\win-unpacked\Pocket.exe, no install needed)\
-the exe is not code signed, so windows smartscreen will warn you the first time (More info, Run anyway)\
-the installer never includes your config.json or api keys
+this builds a single portable exe at dist\Pocket-1.0.0.exe, double click it to run, nothing gets installed\
+the exe is not code signed, so windows smartscreen will warn you the first time (More info, Run anyway)
 ### where data is stored
-config.json: in your local folder when you use npm start, in %APPDATA%\pocket when you use the installed exe\
+config.json: in your local folder when you use npm start, in %APPDATA%\pocket when you use the exe\
 artwork, game info, favorites, play time: %APPDATA%\pocket (shared by both)

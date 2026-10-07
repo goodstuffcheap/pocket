@@ -13,8 +13,8 @@
     "productName": "Pocket",
     "directories": { "output": "dist" },
     "files": ["main.js", "preload.js", "index.html", "fonts/**/*", "sounds/**/*", "package.json"],
-    "win": { "target": "nsis", "icon": "build/icon.png" },
-    "nsis": { "oneClick": true, "perMachine": false, "artifactName": "Pocket-Setup-${version}.${ext}" }
+    "win": { "target": "portable", "icon": "build/icon.png" },
+    "portable": { "artifactName": "Pocket-${version}.${ext}" }
   },
   "keywords": [],
   "author": "",
