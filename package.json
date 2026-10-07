@@ -1,17 +1,27 @@
 {
   "name": "pocket",
   "version": "1.0.0",
-  "description": "",
+  "description": "A 3DS-style game launcher for PC",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.pocket.launcher",
+    "productName": "Pocket",
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "index.html", "fonts/**/*", "sounds/**/*", "package.json"],
+    "win": { "target": "nsis", "icon": "build/icon.png" },
+    "nsis": { "oneClick": true, "perMachine": false, "artifactName": "Pocket-Setup-${version}.${ext}" }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^44.5.1"
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3"
   }
 }

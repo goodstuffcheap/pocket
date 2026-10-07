@@ -12,5 +12,8 @@
   },
   "systems": {
     "nds": "example"
-  }
+  },
+  "sounds": {},
+  "musicVolume": 40,
+  "sfxVolume": 70
 }

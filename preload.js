@@ -12,6 +12,10 @@ contextBridge.exposeInMainWorld('api', {
   artCandidates: (t) => ipcRenderer.invoke('art:candidates', t),
   setArt: (g, k, src) => ipcRenderer.invoke('art:set', g, k, src),
   pickImage: () => ipcRenderer.invoke('dialog:image'),
+  metaSearch: (t, sys) => ipcRenderer.invoke('meta:search', t, sys),
+  setMeta: (g, id) => ipcRenderer.invoke('meta:set', g, id),
+  getSounds: () => ipcRenderer.invoke('sounds:get'),
+  pickAudio: () => ipcRenderer.invoke('dialog:audio'),
   setFav: (k, on) => ipcRenderer.invoke('fav:set', k, on),
   launch: (game) => ipcRenderer.invoke('game:launch', game),
 });

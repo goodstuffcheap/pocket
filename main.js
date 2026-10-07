@@ -5,10 +5,14 @@ const { spawn } = require('child_process');
 const crypto = require('crypto');
 const { pathToFileURL } = require('url');
 
-// Settings live in config.json next to this file (ROM folder, emulators, which system uses which).
-const CONFIG_PATH = path.join(__dirname, 'config.json');
+// Artwork cache, favorites and play time live in %APPDATA%\pocket, both with `npm start` and in the installed app.
+app.setPath('userData', path.join(app.getPath('appData'), 'pocket'));
+// Settings (ROM folder, emulators, which system uses which, API keys) live in config.json.
+// With `npm start` it sits next to this file. The installed app is read-only, so it uses the data folder instead.
+const CONFIG_PATH = app.isPackaged ? path.join(app.getPath('userData'), 'config.json') : path.join(__dirname, 'config.json');
 function loadConfig() {
-  const base = { romsDir: 'D:\\ROMs', emulatorsDir: '', steamGridDbKey: '', rawgKey: '', emulators: {}, systems: {} };
+  const base = { romsDir: 'D:\\ROMs', emulatorsDir: '', steamGridDbKey: '', rawgKey: '', emulators: {}, systems: {},
+    sounds: {}, musicVolume: 40, sfxVolume: 70 };
   try { return { ...base, ...JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) }; }
   catch (e) { return base; }
 }
@@ -135,20 +139,38 @@ async function setArt(g, kind, src, lock) {
 const RAWG_PLAT = { desktop: 4, switch: 7, n3ds: 8, nds: 9, gc: 105, wii: 11, wiiu: 10, gba: 24, gb: 26, gbc: 43,
   n64: 83, nes: 49, snesna: 79, snes: 79, genesis: 167, ps2: 15, ps3: 16, ps4: 18, psp: 17, psvita: 19, psx: 27, saturn: 107 };
 async function rawg(p) {
-  const r = await fetch(`https://api.rawg.io/api/${p}${p.includes('?') ? '&' : '?'}key=${loadConfig().rawgKey}`);
+  const key = loadConfig().rawgKey;
+  if (!key) throw new Error('No RAWG API key set.');
+  const r = await fetch(`https://api.rawg.io/api/${p}${p.includes('?') ? '&' : '?'}key=${key}`);
   if (!r.ok) throw new Error('RAWG error ' + r.status);
   return r.json();
+}
+// full details for one RAWG game id; shots come from the search result when we have it
+async function metaById(id, shots) {
+  const d = await rawg('games/' + id);
+  if (!shots) shots = ((await rawg(`games/${id}/screenshots?page_size=4`).catch(() => ({}))).results || []).map(s => s.image);
+  return { id: d.id, name: d.name, desc: (d.description_raw || '').trim(), released: d.released || '',
+    developers: (d.developers || []).map(x => x.name), publishers: (d.publishers || []).map(x => x.name),
+    genres: (d.genres || []).map(x => x.name), metacritic: d.metacritic || null,
+    esrb: d.esrb_rating ? d.esrb_rating.name : '', shots: shots.slice(0, 3) };
 }
 async function fetchMeta(g) {
   const q = encodeURIComponent(g.name), pl = RAWG_PLAT[g.system];
   let res = (await rawg(`games?search=${q}&search_precise=true&page_size=3${pl ? '&platforms=' + pl : ''}`)).results || [];
   if (!res.length && pl) res = (await rawg(`games?search=${q}&page_size=3`)).results || [];
   if (!res[0]) return null;
-  const d = await rawg('games/' + res[0].id);
-  return { name: d.name, desc: (d.description_raw || '').trim(), released: d.released || '',
-    developers: (d.developers || []).map(x => x.name), publishers: (d.publishers || []).map(x => x.name),
-    genres: (d.genres || []).map(x => x.name), metacritic: d.metacritic || null,
-    esrb: d.esrb_rating ? d.esrb_rating.name : '', shots: (res[0].short_screenshots || []).slice(1, 4).map(s => s.image) };
+  return metaById(res[0].id, (res[0].short_screenshots || []).slice(1, 4).map(s => s.image));
+}
+// list of possible RAWG matches for the info picker, games on this system first
+async function metaSearch(term, system) {
+  const pl = RAWG_PLAT[system];
+  const res = (await rawg(`games?search=${encodeURIComponent(term)}&page_size=12`)).results || [];
+  const out = res.map(r => {
+    const plats = (r.platforms || []).map(p => p.platform);
+    return { id: r.id, name: r.name, released: r.released || '', image: r.background_image || null,
+      platforms: plats.map(p => p.name), match: !!pl && plats.some(p => p.id === pl) };
+  });
+  return out.filter(r => r.match).concat(out.filter(r => !r.match));
 }
 async function scrapeGame(g, cfg, force) {
   const a = artDB[gkey(g)] || (artDB[gkey(g)] = {});
@@ -158,7 +180,8 @@ async function scrapeGame(g, cfg, force) {
       if (c[kind] && c[kind][0] && !(a.locked && a[kind])) await setArt(g, kind, c[kind][0].url);
     a.tried = true;
   }
-  if (cfg.rawgKey && (force || (!a.meta && !a.metaTried))) {
+  // metaLocked: the user picked (or cleared) the game info by hand, so scraping leaves it alone
+  if (cfg.rawgKey && !a.metaLocked && (force || (!a.meta && !a.metaTried))) {
     const md = await fetchMeta(g);
     if (md) a.meta = md;
     a.metaTried = true;
@@ -173,7 +196,7 @@ async function scrapeAll(force, manual) {
   scraping = true;
   const need = (g) => {
     const a = artDB[gkey(g)] || {};
-    return force || (cfg.steamGridDbKey && !a.tried) || (cfg.rawgKey && !a.meta && !a.metaTried);
+    return force || (cfg.steamGridDbKey && !a.tried) || (cfg.rawgKey && !a.metaLocked && !a.meta && !a.metaTried);
   };
   const q = scanLibrary().games.filter(need), total = q.length;
   let done = 0, fails = 0, fatal = null;
@@ -204,13 +227,46 @@ ipcMain.handle('art:candidates', async (_e, term) => { try { return await candid
 ipcMain.handle('art:set', async (_e, g, kind, src) => {
   try { await setArt(g, kind, src, true); return { art: artFor(g) }; } catch (e) { return { error: e.message }; }
 });
+ipcMain.handle('meta:search', async (_e, term, system) => {
+  try { return { results: await metaSearch(term, system) }; } catch (e) { return { error: e.message }; }
+});
+// id = a RAWG game id to use for this game, or null to clear the info. Either way it is locked from scraping.
+ipcMain.handle('meta:set', async (_e, g, id) => {
+  try {
+    const a = artDB[gkey(g)] || (artDB[gkey(g)] = {});
+    a.meta = id ? await metaById(id) : null;
+    a.metaLocked = true; a.metaTried = true; saveArt();
+    return { meta: a.meta };
+  } catch (e) { return { error: e.message }; }
+});
+
+// ---------- sounds ----------
+// Each slot uses the file the user picked in Settings, or the placeholder in the sounds folder.
+const SOUND_SLOTS = ['music', 'move', 'select', 'back', 'switch', 'launch'];
+ipcMain.handle('sounds:get', () => {
+  const custom = loadConfig().sounds || {}, out = {};
+  for (const s of SOUND_SLOTS) {
+    const c = custom[s] && fs.existsSync(custom[s]) ? custom[s] : null;
+    out[s] = { url: toUrl(c || path.join(__dirname, 'sounds', s + '.wav')), custom: c, missing: !!custom[s] && !c };
+  }
+  return out;
+});
+ipcMain.handle('dialog:audio', async () => {
+  const r = await dialog.showOpenDialog(mainWin, { properties: ['openFile'],
+    filters: [{ name: 'Audio', extensions: ['mp3', 'ogg', 'wav', 'flac', 'm4a', 'opus', 'webm'] }] });
+  return r.canceled ? null : r.filePaths[0];
+});
+
 ipcMain.handle('dialog:image', async () => {
   const r = await dialog.showOpenDialog(mainWin, { properties: ['openFile'], filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif'] }] });
   return r.canceled ? null : r.filePaths[0];
 });
 
 ipcMain.handle('config:get', () => loadConfig());
-ipcMain.handle('config:set', (_e, cfg) => { fs.writeFileSync(CONFIG_PATH, JSON.stringify(cfg, null, 2)); return true; });
+ipcMain.handle('config:set', (_e, cfg) => {
+  fs.mkdirSync(path.dirname(CONFIG_PATH), { recursive: true });
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify(cfg, null, 2)); return true;
+});
 ipcMain.handle('dialog:folder', async (_e, title) => {
   const r = await dialog.showOpenDialog(mainWin, { title, properties: ['openDirectory'] });
   return r.canceled ? null : r.filePaths[0];
@@ -256,6 +312,7 @@ ipcMain.handle('game:launch', (_e, { system, path: rom, key }) => {
       if (!started) return;
       const s = key && userDB.stats[key];
       if (s) { s.played = (s.played || 0) + (Date.now() - t0); saveUser(); send({ type: 'stats', key, stats: s }); }
+      send({ type: 'exited' });
       if (mainWin) { mainWin.restore(); mainWin.focus(); }
     });
   });
@@ -265,7 +322,7 @@ function createWindow() {
   const win = mainWin = new BrowserWindow({
     width: 1280,
     height: 800,
-    backgroundColor: '#4cc9a0',
+    backgroundColor: '#2d2d2d',
     autoHideMenuBar: true,
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true },
   });

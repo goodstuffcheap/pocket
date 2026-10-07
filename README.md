@@ -33,14 +33,28 @@ npm start
 6. optionally paste a [SteamGridDB](https://www.steamgriddb.com) API key for artwork (pocket will fetch automatically on startup, however the refresh button at the bottom bar starts a re-scrape)
 7. optionally paste a [RAWG](https://rawg.io/apidocs) API key for game info
 8. you can manually set your own artwork for games by clicking the picture icon in the bottom right of the game banner
+9. if a game got the wrong description, open it and press Game info to pick the right game from RAWG
+10. added or removed roms? press Rescan in settings
+11. sounds and music use placeholders until you pick your own files in settings (Sound section)
 ### controls
 | Action | Keyboard | Controller (XBOX Layout) |
 | :--- | :---: | ---: |
 | Move | Arrow Keys / WASD | D-Pad / Left Stick |
-| Open Game | Enter | A
-| Back | Escape / Backspace | B
+| Open Game / Press button | Enter | A
+| Back / Close / Clear search | Escape / Backspace | B
 | Change Artwork | X | Y |
+| Play Stats | P | X |
+| Previous / Next System | Q / E | LB / RB |
+| Change Sort | O | Select (View) |
+| Search | / or Ctrl+F | (keyboard only) |
 | Settings | M | Start |
+### making the exe
+```
+npm run dist
+```
+this builds an installer at dist\Pocket-Setup-1.0.0.exe (and a runnable copy at dist\win-unpacked\Pocket.exe, no install needed)\
+the exe is not code signed, so windows smartscreen will warn you the first time (More info, Run anyway)\
+the installer never includes your config.json or api keys
 ### where data is stored
-config.json in your local folder
-artwork, game info, favorites, play time: %APPDATA%\pocket
+config.json: in your local folder when you use npm start, in %APPDATA%\pocket when you use the installed exe\
+artwork, game info, favorites, play time: %APPDATA%\pocket (shared by both)
