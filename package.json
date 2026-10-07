@@ -1,6 +1,6 @@
 {
   "name": "pocket",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "A 3DS-style game launcher for PC",
   "main": "main.js",
   "scripts": {
@@ -11,9 +11,22 @@
   "build": {
     "appId": "com.pocket.launcher",
     "productName": "Pocket",
-    "directories": { "output": "dist" },
-    "files": ["main.js", "preload.js", "index.html", "fonts/**/*", "sounds/**/*", "package.json"],
-    "win": { "target": "zip", "icon": "build/icon.png", "artifactName": "Pocket-${version}.${ext}" }
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "fonts/**/*",
+      "sounds/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "zip",
+      "icon": "build/icon.png",
+      "artifactName": "Pocket-${version}.${ext}"
+    }
   },
   "keywords": [],
   "author": "",
