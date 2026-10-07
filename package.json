@@ -13,8 +13,7 @@
     "productName": "Pocket",
     "directories": { "output": "dist" },
     "files": ["main.js", "preload.js", "index.html", "fonts/**/*", "sounds/**/*", "package.json"],
-    "win": { "target": "portable", "icon": "build/icon.png" },
-    "portable": { "artifactName": "Pocket-${version}.${ext}" }
+    "win": { "target": "zip", "icon": "build/icon.png", "artifactName": "Pocket-${version}.${ext}" }
   },
   "keywords": [],
   "author": "",

@@ -16,6 +16,8 @@ contextBridge.exposeInMainWorld('api', {
   setMeta: (g, id) => ipcRenderer.invoke('meta:set', g, id),
   getSounds: () => ipcRenderer.invoke('sounds:get'),
   pickAudio: () => ipcRenderer.invoke('dialog:audio'),
+  toggleFullscreen: () => ipcRenderer.invoke('win:fullscreen'),
+  quit: () => ipcRenderer.invoke('app:quit'),
   setFav: (k, on) => ipcRenderer.invoke('fav:set', k, on),
   launch: (game) => ipcRenderer.invoke('game:launch', game),
 });

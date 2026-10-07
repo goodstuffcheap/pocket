@@ -262,6 +262,10 @@ ipcMain.handle('dialog:image', async () => {
   return r.canceled ? null : r.filePaths[0];
 });
 
+// window controls, so fullscreen can be left and the app closed with a controller too (Settings)
+ipcMain.handle('win:fullscreen', () => { if (mainWin) mainWin.setFullScreen(!mainWin.isFullScreen()); return true; });
+ipcMain.handle('app:quit', () => { app.quit(); return true; });
+
 ipcMain.handle('config:get', () => loadConfig());
 ipcMain.handle('config:set', (_e, cfg) => {
   fs.mkdirSync(path.dirname(CONFIG_PATH), { recursive: true });
@@ -324,7 +328,15 @@ function createWindow() {
     height: 800,
     backgroundColor: '#2d2d2d',
     autoHideMenuBar: true,
+    fullscreen: true,
+    show: false, // shown once the first frame (the boot screen) is painted, so there is no blank flash
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true },
+  });
+  win.once('ready-to-show', () => win.show());
+  setTimeout(() => { if (!win.isDestroyed() && !win.isVisible()) win.show(); }, 4000); // safety net
+  // F11 toggles fullscreen (calling preventDefault here also stops the hidden menu from handling the key)
+  win.webContents.on('before-input-event', (e, input) => {
+    if (input.type === 'keyDown' && input.key === 'F11') { e.preventDefault(); win.setFullScreen(!win.isFullScreen()); }
   });
   win.loadFile('index.html');
   win.webContents.once('did-finish-load', () => setTimeout(() => scrapeAll(false, false), 1500));
